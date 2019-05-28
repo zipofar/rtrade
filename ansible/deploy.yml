@@ -1,0 +1,25 @@
+- hosts: webservers
+  gather_facts: no
+
+  tasks:
+    - name: Git pull
+      git:
+        repo: https://github.com/zipofar/rtraid.git 
+        dest: /home/ingprog/apps/rtraid
+        update: yes
+        version: master
+
+    - name: Make env for Docker
+      template:
+        src: templates/env_docker.j2
+        dest: /home/ingprog/apps/rtraid/.env
+
+    - name: Make env for App
+      template:
+        src: templates/env_app.j2
+        dest: /home/ingprog/apps/rtraid/app/.env
+
+    - name: Run makefile production-setup
+      make:
+        chdir: /home/ingprog/apps/rtraid
+        target: production-setup
