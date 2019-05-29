@@ -7,7 +7,7 @@ class m190529_083134_create_films_table extends CDbMigration
         $this->createTable('tbl_films', [
             'id' => 'pk',
             'name' => 'string NOT NULL',
-            'descriptiopn' => 'text',
+            'description' => 'text',
             'user_id' => 'integer NOT NULL',
         ]);
 	}
