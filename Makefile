@@ -11,6 +11,9 @@ install-yii:
 run-dev:
 	docker-compose -f docker-compose_dev.yml up -d
 
+migrate-dev:
+	docker-compose -f docker-compose_dev.yml run php make migrate
+
 run:
 	docker-compose up -d
 
