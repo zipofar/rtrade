@@ -8,3 +8,4 @@
     <p><?= $comment->content ?></p>
 </div>
 <?php endforeach ?>
+<?php var_dump(Yii::app()->user); ?>
