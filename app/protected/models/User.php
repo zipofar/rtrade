@@ -16,7 +16,7 @@ class User extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'tbl_user';
+		return 'tbl_users';
 	}
 
 	/**
@@ -40,10 +40,10 @@ class User extends CActiveRecord
 	 */
 	public function relations()
 	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-		);
+        return [
+            'films' => [self::HAS_MANY, 'Film', 'user_id'],
+            'comments' => [self::HAS_MANY, 'Comment', 'user_id'],
+        ];
 	}
 
 	/**

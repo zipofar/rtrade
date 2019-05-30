@@ -9,3 +9,5 @@
     </li>
     <?php endforeach ?>
 </ul>
+
+<?php $this->widget('CLinkPager', ['pages' => $pages]) ?>

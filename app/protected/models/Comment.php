@@ -9,25 +9,14 @@
  * @property string $password
  * @property string $email
  */
-class Film extends CActiveRecord
+class Comment extends CActiveRecord
 {
     /**
      * @return string the associated database table name
      */
     public function tableName()
     {
-        return 'tbl_films';
-    }
-
-    /**
-     * @return array validation rules for model attributes.
-     */
-    public function rules()
-    {
-        return [
-            ['name, description', 'required'],
-            ['name', 'length', 'max' => 128],
-        ];
+        return 'tbl_comments';
     }
 
     /**
@@ -36,8 +25,8 @@ class Film extends CActiveRecord
     public function relations()
     {
         return [
-            'seeder' => [self::BELONGS_TO, 'User', 'user_id'],
-            'comments' => [self::HAS_MANY, 'Comment', 'film_id'],
+            'author' => [self::BELONGS_TO, 'User', 'user_id'],
+            'film' => [self::BELONGS_TO, 'Film', 'film_id'],
         ];
     }
 
