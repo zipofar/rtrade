@@ -7,6 +7,7 @@
  */
 class UserIdentity extends CUserIdentity
 {
+    private $id;
     /**
      * Authenticates a user.
      * The example implementation makes sure if the username and password
@@ -23,8 +24,14 @@ class UserIdentity extends CUserIdentity
         } elseif (!$this->password === $user->password) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         } else {
+            $this->id = $user->id;
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }
