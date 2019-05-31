@@ -19,12 +19,15 @@ class UserIdentity extends CUserIdentity
     public function authenticate()
     {
         $user = User::model()->findByAttributes(['username' => $this->username]);
+
         if ($user === null) {
             $this->errorCode = self::ERROR_USERNAME_INVALID;
-        } elseif (!$this->password === $user->password) {
+        } elseif ($this->password !== $user->password) {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         } else {
             $this->id = $user->id;
+            $isAdmin = $user->role === 'admin';
+            $this->setState('isAdmin', $isAdmin);
             $this->errorCode = self::ERROR_NONE;
         }
         return !$this->errorCode;

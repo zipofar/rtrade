@@ -1,13 +1,10 @@
 <?php
 
-class AdminfilmController extends Controller
+class FilmController extends Controller
 {
     public function actionIndex()
     {
-        $userId = Yii::app()->user->getId();
         $criteria = new CDbCriteria();
-        $criteria->condition = 'user_id=:userId';
-        $criteria->params = [':userId' => $userId];
         $count = Film::model()->count($criteria);
         $pages = new CPagination($count);
         $pages->pageSize = 2;

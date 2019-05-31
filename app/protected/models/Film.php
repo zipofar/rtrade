@@ -47,8 +47,22 @@ class Film extends CActiveRecord
      * @param string $className active record class name.
      * @return User the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
+    }
+
+    public function search()
+    {
+        $criteria = new CDbCriteria();
+
+        $criteria->compare('id', $this->id);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('description', $this->description, true);
+        $criteria->compare('user_id', $this->user_id);
+
+        return new CActiveDataProvider($this, array(
+            'criteria' => $criteria,
+        ));
     }
 }
