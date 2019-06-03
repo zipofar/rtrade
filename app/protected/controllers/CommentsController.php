@@ -6,7 +6,7 @@ class CommentsController extends Controller
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
      */
-    public $layout='//layouts/column2';
+    public $layout = '//layouts/column2';
 
     /**
      * @return array action filters
@@ -26,21 +26,21 @@ class CommentsController extends Controller
      */
     public function accessRules()
     {
+        $isAdmin = function ($user, $rule) {
+            return $user->getState('isAdmin');
+        };
+
         return array(
-            array('allow',  // allow all users to perform 'index' and 'view' actions
-            'actions'=>array('index','view'),
-            'users'=>array('*'),
-        ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-            'actions'=>array('create','update'),
-            'users'=>array('@'),
+            'actions' => array('create','update', 'index','view', 'delete'),
+            'users' => array('@'),
         ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
-            'actions'=>array('admin','delete'),
-            'users'=>array('admin'),
+            'actions' => array('admin'),
+            'expression' => $isAdmin,
         ),
             array('deny',  // deny all users
-            'users'=>array('*'),
+            'users' => array('*'),
         ),
         );
     }
@@ -51,8 +51,8 @@ class CommentsController extends Controller
      */
     public function actionView($id)
     {
-        $this->render('view',array(
-            'model'=>$this->loadModel($id),
+        $this->render('view', array(
+            'model' => $this->loadModel($id),
         ));
     }
 
@@ -62,21 +62,17 @@ class CommentsController extends Controller
      */
     public function actionCreate()
     {
-        $model=new Comments;
+        $model = new Comment();
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if(isset($_POST['Comments']))
-        {
-            $model->attributes=$_POST['Comments'];
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+        if (isset($_POST['Comment'])) {
+            $model->attributes = $_POST['Comment'];
+            $model->user_id = Yii::app()->user->getId();
+            if ($model->save()) {
+                $this->redirect(['site/view', 'id' => $_POST['Comment']['film_id']]);
+            }
         }
 
-        $this->render('create',array(
-            'model'=>$model,
-        ));
+        $this->redirect(['site/index']);
     }
 
     /**
@@ -86,20 +82,20 @@ class CommentsController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model=$this->loadModel($id);
+        $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if(isset($_POST['Comments']))
+        if(isset($_POST['Comment']))
         {
-            $model->attributes=$_POST['Comments'];
+            $model->attributes = $_POST['Comment'];
             if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+                $this->redirect(array('view','id' => $model->id));
         }
 
-        $this->render('update',array(
-            'model'=>$model,
+        $this->render('update', array(
+            'model' => $model,
         ));
     }
 
@@ -113,8 +109,11 @@ class CommentsController extends Controller
         $this->loadModel($id)->delete();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if(!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        if (!isset($_GET['ajax'])) {
+            //$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            $this->redirect(['comments/index']);
+
+        }
     }
 
     /**
@@ -128,7 +127,7 @@ class CommentsController extends Controller
         $criteria->params = [':userId' => $userId];
         $criteria->with = 'film';
 
-        $dataProvider = new CActiveDataProvider('Comments', [
+        $dataProvider = new CActiveDataProvider('Comment', [
             'criteria' => $criteria,
             'pagination' => ['pageSize' => 2],
         ]);
@@ -142,13 +141,13 @@ class CommentsController extends Controller
      */
     public function actionAdmin()
     {
-        $model=new Comments('search');
+        $model = new Comment('search');
         $model->unsetAttributes();  // clear any default values
         if(isset($_GET['Comments']))
-            $model->attributes=$_GET['Comments'];
+            $model->attributes = $_GET['Comments'];
 
-        $this->render('admin',array(
-            'model'=>$model,
+        $this->render('admin', array(
+            'model' => $model,
         ));
     }
 
@@ -161,10 +160,25 @@ class CommentsController extends Controller
      */
     public function loadModel($id)
     {
-        $model=Comments::model()->findByPk($id);
+        $model = Comment::model()->findByPk($id);
+        $userId = Yii::app()->user->getId();
+        $userIsAdmin = Yii::app()->user->getState('isAdmin');
+        $userIsOwnerThisRecord = $model->user_id === $userId;
+
+        if ($model === null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+
+        if ($userIsOwnerThisRecord || $userIsAdmin) {
+            return $model;
+        }
+
+        throw new CHttpException(403, 'The requested page is forbidden.');
+        /*
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
         return $model;
+         */
     }
 
     /**

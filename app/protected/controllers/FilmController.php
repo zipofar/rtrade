@@ -105,7 +105,7 @@ class FilmController extends Controller
     public function actionDelete($id)
     {
         $this->loadModel($id)->delete();
-        $this->redirect(Yii::app()->user->returnUrl);
+        $this->redirect(['film/index']);
     }
 
     /**

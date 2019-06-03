@@ -27,11 +27,32 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        // renders the view file 'protected/views/site/index.php'
-        // using the default layout 'protected/views/layouts/main.php'
-        $this->render('index');
+        $criteria = new CDbCriteria();
+        $count = Film::model()->count($criteria);
+        $pages = new CPagination($count);
+        $pages->pageSize = 2;
+        $pages->applyLimit($criteria);
+        $films = Film::model()->findAll($criteria);
+        $this->render('index', ['films' => $films, 'pages' => $pages]);
     }
 
+    /**
+     * Displays a particular model.
+     * @param integer $id the ID of the model to be displayed
+     */
+    public function actionView($id)
+    {
+        $film = Film::model()->with('seeder', 'comments.author')->findByPk($id);
+        $comment = new Comment();
+
+        if ($film === null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+
+        $this->render('view', ['newComment' => $comment, 'film' => $film]);
+    }
+
+    /**
     /**
      * This is the action to handle external exceptions.
      */

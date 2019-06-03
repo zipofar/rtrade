@@ -9,7 +9,6 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
     array('label'=>'List Comments', 'url'=>array('index')),
-    array('label'=>'Create Comments', 'url'=>array('create')),
     array('label'=>'Update Comments', 'url'=>array('update', 'id'=>$model->id)),
     array('label'=>'Delete Comments', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
     array('label'=>'Manage Comments', 'url'=>array('admin')),

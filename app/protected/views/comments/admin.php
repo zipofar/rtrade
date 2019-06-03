@@ -3,25 +3,25 @@
 /* @var $model Comments */
 
 $this->breadcrumbs=array(
-	'Comments'=>array('index'),
-	'Manage',
+    'Comments'=>array('index'),
+    'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List Comments', 'url'=>array('index')),
-	array('label'=>'Create Comments', 'url'=>array('create')),
+    array('label'=>'List Comments', 'url'=>array('index')),
+    array('label'=>'Create Comments', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
+    $('.search-button').click(function(){
+        $('.search-form').toggle();
+        return false;
 });
 $('.search-form form').submit(function(){
-	$('#comments-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
+    $('#comments-grid').yiiGridView('update', {
+    data: $(this).serialize()
+    });
+    return false;
 });
 ");
 ?>
@@ -36,21 +36,21 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 <?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
-	'model'=>$model,
+    'model'=>$model,
 )); ?>
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'comments-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'content',
-		'user_id',
-		'film_id',
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
+    'id'=>'comments-grid',
+    'dataProvider'=>$model->search(),
+    'filter'=>$model,
+    'columns'=>array(
+        'id',
+        'content',
+        'user_id',
+        'film_id',
+        array(
+            'class'=>'CButtonColumn',
+        ),
+    ),
 )); ?>

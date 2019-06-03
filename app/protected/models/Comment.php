@@ -9,7 +9,7 @@
  * @property integer $user_id
  * @property integer $film_id
  */
-class Comments extends CActiveRecord
+class Comment extends CActiveRecord
 {
     /**
      * @return string the associated database table name
