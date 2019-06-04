@@ -2,7 +2,7 @@
 
 class FilmController extends Controller
 {
-    const PER_PAGE = 2;
+    const PER_PAGE = 10;
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning

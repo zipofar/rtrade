@@ -2,7 +2,7 @@
 
 class SiteController extends Controller
 {
-    const PER_PAGE = 2;
+    const PER_PAGE = 10;
 
     /**
      * Declares class-based actions.

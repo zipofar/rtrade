@@ -32,7 +32,7 @@ $this->pageTitle=Yii::app()->name . ' - Login';
         <?php echo $form->passwordField($model,'password'); ?>
         <?php echo $form->error($model,'password'); ?>
         <p class="hint">
-            Hint: You may login with <kbd>demo</kbd>/<kbd>demo</kbd> or <kbd>admin</kbd>/<kbd>admin</kbd>.
+            Hint: You may login with <kbd>test1</kbd>/<kbd>pass1</kbd> or <kbd>admin</kbd>/<kbd>pass1</kbd>.
         </p>
     </div>
 
