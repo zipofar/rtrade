@@ -1,6 +1,6 @@
-INSERT INTO tbl_users (username, password, role) VALUES ('test1', 'pass1', 'user');
-INSERT INTO tbl_users (username, password, role) VALUES ('test2', 'pass2', 'user');
-INSERT INTO tbl_users (username, password, role) VALUES ('root', 'pass', 'admin');
+INSERT INTO tbl_users (username, password, role) VALUES ('test1', '$2y$13$vuWxNshA/jRjdx.QrTZtp.uj8QumPknYJ7gUYR/9CyKb0R.m2sWTu', 'user');
+INSERT INTO tbl_users (username, password, role) VALUES ('test2', '$2y$13$vuWxNshA/jRjdx.QrTZtp.uj8QumPknYJ7gUYR/9CyKb0R.m2sWTu', 'user');
+INSERT INTO tbl_users (username, password, role) VALUES ('root', '$2y$13$vuWxNshA/jRjdx.QrTZtp.uj8QumPknYJ7gUYR/9CyKb0R.m2sWTu', 'admin');
 
 INSERT INTO tbl_films (name, description, user_id) VALUES ('Film 1', 'Description 1', '1');
 INSERT INTO tbl_films (name, description, user_id) VALUES ('Film 2', 'Description 2', '1');
