@@ -28,11 +28,11 @@ class Comment extends CActiveRecord
         // will receive user inputs.
         return array(
             array('content', 'required'),
-            array('user_id, film_id', 'numerical', 'integerOnly'=>true),
-            array('content', 'length', 'max'=>255),
+            array('user_id, film_id', 'numerical', 'integerOnly'  => true),
+            array('content', 'length', 'max' => 255),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, content, user_id, film_id', 'safe', 'on'=>'search'),
+            array('id, content, user_id, film_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -76,15 +76,15 @@ class Comment extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria();
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('content',$this->content,true);
-        $criteria->compare('user_id',$this->user_id);
-        $criteria->compare('film_id',$this->film_id);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('content', $this->content, true);
+        $criteria->compare('user_id', $this->user_id);
+        $criteria->compare('film_id', $this->film_id);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
@@ -94,7 +94,7 @@ class Comment extends CActiveRecord
      * @param string $className active record class name.
      * @return Comments the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }

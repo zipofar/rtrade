@@ -2,6 +2,8 @@
 
 class FilmController extends Controller
 {
+    const PER_PAGE = 2;
+
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
      * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -13,10 +15,10 @@ class FilmController extends Controller
      */
     public function filters()
     {
-        return array(
+        return [
             'accessControl', // perform access control for CRUD operations
             'postOnly + delete', // we only allow deletion via POST request
-        );
+        ];
     }
 
     /**
@@ -30,19 +32,19 @@ class FilmController extends Controller
             return $user->getState('isAdmin');
         };
 
-        return array(
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-            'actions' => array('create','update', 'index','view', 'delete'),
-            'users' => array('@'),
-        ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-            'actions' => array('admin'),
+        return [
+            ['allow', // allow authenticated user to perform 'create' and 'update' actions
+            'actions' => ['create','update', 'index','view', 'delete'],
+            'users' => ['@'],
+            ],
+            ['allow', // allow admin user to perform 'admin' and 'delete' actions
+            'actions' => ['admin'],
             'expression' => $isAdmin,
-        ),
-            array('deny',  // deny all users
-            'users' => array('*'),
-        ),
-        );
+            ],
+            ['deny',  // deny all users
+            'users' => ['*'],
+            ],
+        ];
     }
 
     /**
@@ -51,27 +53,21 @@ class FilmController extends Controller
      */
     public function actionView($id)
     {
-        $this->render('view', array(
-            'model' => $this->loadModel($id),
-        ));
+        $this->render('view', ['model' => $this->loadModel($id)]);
     }
 
     /**
      * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate()
     {
         $model = new Film();
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['Film'])) {
             $model->attributes = $_POST['Film'];
             $model->user_id = Yii::app()->user->getId();
             if ($model->save()) {
-                $this->redirect(array('view','id' => $model->id));
+                $this->redirect(['view','id' => $model->id]);
             }
         }
 
@@ -80,7 +76,6 @@ class FilmController extends Controller
 
     /**
      * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
     public function actionUpdate($id)
@@ -90,7 +85,7 @@ class FilmController extends Controller
         if (isset($_POST['Film'])) {
             $model->attributes = $_POST['Film'];
             if ($model->save()) {
-                $this->redirect(array('view','id' => $model->id));
+                $this->redirect(['view','id' => $model->id]);
             }
         }
 
@@ -99,7 +94,6 @@ class FilmController extends Controller
 
     /**
      * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      */
     public function actionDelete($id)
@@ -114,13 +108,17 @@ class FilmController extends Controller
     public function actionIndex()
     {
         $userId = Yii::app()->user->getId();
+
         $criteria = new CDbCriteria();
         $criteria->condition = 'user_id=:userId';
         $criteria->params = [':userId' => $userId];
+
         $count = Film::model()->count($criteria);
+
         $pages = new CPagination($count);
-        $pages->pageSize = 2;
+        $pages->pageSize = self::PER_PAGE;
         $pages->applyLimit($criteria);
+
         $films = Film::model()->findAll($criteria);
         $this->render('index', ['films' => $films, 'pages' => $pages]);
     }
