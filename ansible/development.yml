@@ -14,23 +14,26 @@
 
     - name: Make dir
       file:
-        path: ../mysql/docker-entrypoint-initdb.d
+        path: "{{ item }}"
         state: directory
         mode: 0755
-
-    - name: Make dir
-      file:
-        path: ../mysql/db
-        state: directory
-        mode: 0755
-
-    - name: Make dir
-      file:
-        path: ../nginx/log
-        state: directory
-        mode: 0755
+      with_list:
+        - ../mysql/docker-entrypoint-initdb.d
+        - ../mysql/db
+        - ../nginx/log
 
     - name: Make instruction for create db
       template:
         src: templates/01_create_db.sql.j2
         dest: '../mysql/docker-entrypoint-initdb.d/01_create_db.sql'
+
+    - name: Fix chmod
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0777
+      with_list:
+        - ../app/protected/runtime
+        - ../app/protected/controllers
+        - ../app/protected/views
+        - ../app/assets
