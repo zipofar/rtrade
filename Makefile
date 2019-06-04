@@ -17,10 +17,11 @@ migrate-dev:
 seed:
 	docker-compose run php make seed
 
+compose-setup: yii install migrate-dev seed
+
 dev:
 	docker-compose -f docker-compose_dev.yml up -d
 
-compose: yii install migrate-dev seed dev
 
 kill:
 	docker-compose kill
