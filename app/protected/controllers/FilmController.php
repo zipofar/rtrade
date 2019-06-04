@@ -98,6 +98,11 @@ class FilmController extends Controller
      */
     public function actionDelete($id)
     {
+        $film = $this->loadModel($id);
+        $comments = Comment::model()->findAll('film_id=:film_id', ['film_id' => $id]);
+        foreach ($comments as $comment) {
+            $comment->delete();
+        }
         $this->loadModel($id)->delete();
         $this->redirect(['film/index']);
     }
