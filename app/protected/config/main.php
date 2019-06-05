@@ -36,6 +36,10 @@ return array(
             'enableCsrfValidation'=>true,
         ),
 
+        'urlManager'=>array(
+            'urlFormat'=>'path',
+        ),
+
         'user'=>array(
             // enable cookie-based authentication
             'allowAutoLogin'=>true,
